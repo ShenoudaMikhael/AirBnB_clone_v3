@@ -15,5 +15,5 @@ def get_status():
 def get_stats():
     """get stats"""
     # add storage.count after merge
-    return jsonify({})
-    # return jsonify(storage.count)
+    # return jsonify({})
+    return jsonify(storage.count)
