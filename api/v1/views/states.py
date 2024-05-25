@@ -40,7 +40,8 @@ def delete_state(id):
             return {}, 200
         abort(404)
 
-@app_views.route("/states/<state_id>")
+
+@app_views.route("/states/<state_id>", methods=["PUT"])
 def update_state(state_id):
     """Update a State object"""
     state = storage.get(State, state_id)
