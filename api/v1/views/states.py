@@ -5,6 +5,7 @@ from api.v1.views import app_views
 from models import storage
 from models.state import State
 from flask import request, abort
+from flask import jsonify
 
 
 @app_views.route("/states/<id>")
@@ -38,3 +39,20 @@ def delete_state(id):
             storage.save()
             return {}, 200
         abort(404)
+
+@app_views.route("/states/<state_id>")
+def update_state(state_id):
+    """Update a State object"""
+    state = storage.get(State, state_id)
+    if state is None:
+        abort(404)
+
+    data = request.get_json()
+    if not data:
+        abort(400, "Not a JSON")
+
+    for key, value in data.items():
+        if key not in ['id', 'created_at', 'updated_at']:
+            setattr(state, key, value)
+    storage.save()
+    return jsonify(state.to_dict()), 200
