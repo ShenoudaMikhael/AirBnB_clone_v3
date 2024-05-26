@@ -29,8 +29,6 @@ def get_status():
 @app_views.route("/stats")
 def get_stats():
     """get stats"""
-    q = {}
-    for c, v in classes.items():
-        count = storage.count(v)
-        q[c] = int(count)
-    return jsonify(q)
+
+    return jsonify(
+        {k.lower(): int(storage.count(v)) for k, v in classes.items()})
