@@ -11,7 +11,6 @@ from flask import request, abort, jsonify
 @app_views.route("/states/<state_id>/cities", methods=["GET"])
 def get_cities(state_id):
     """get all cities of state"""
-    # Start hereee  Bellaaaaaaaaaaaa
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
@@ -44,12 +43,13 @@ def create_city(state_id):
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
-    data = request.get_json()
-    if not data:
-        abort(400, "Not a JSON")
-    if 'name' not in data:
-        abort(400, "Missing name")
-    data['state_id'] = state_id
+    try:
+        data = request.get_json()
+    except Exception:
+        abort(400, jsonify({"error": "Not a JSON"}))
+    if "name" not in data:
+        abort(400, jsonify({"error": "Missing name"}))
+    data["state_id"] = state_id
     new_city = City(**data)
     storage.new(new_city)
     storage.save()
@@ -62,11 +62,12 @@ def update_city(city_id):
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
-    data = request.get_json()
-    if not data:
-        abort(400, "Not a JSON")
+    try:
+        data = request.get_json()
+    except Exception:
+        abort(400, {"error": "Not a JSON"})
     for key, value in data.items():
-        if key not in ['id', 'state_id', 'created_at', 'updated_at']:
+        if key not in ["id", "state_id", "created_at", "updated_at"]:
             setattr(city, key, value)
-    storage.save()
+    city.save()
     return jsonify(city.to_dict()), 200
