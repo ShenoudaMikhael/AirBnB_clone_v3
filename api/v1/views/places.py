@@ -64,13 +64,14 @@ def create_place(city_id):
 @app_views.route("/places/<place_id>", methods=["PUT"])
 def update_place(place_id):
     """Update a Place object"""
-    place = storage.get(Place, place_id)
-    if place is None:
-        abort(404)
     try:
         data = request.get_json()
     except Exception:
         abort(400, jsonify({"error": "Not a JSON"}))
+    place = storage.get(Place, place_id)
+    if place is None:
+        abort(404)
+
     for key, value in data.items():
         if key not in ["id", "user_id", "city_id", "created_at", "updated_at"]:
             setattr(place, key, value)
