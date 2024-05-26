@@ -42,7 +42,7 @@ def delete_review(review_id):
 def create_review(place_id):
     """Delete a review object"""
     try:
-        data = request.get_json()
+        data = request.get_json(force=True)
     except Exception:
         abort(400, "Not a JSON")
     if "text" not in data:
@@ -67,7 +67,7 @@ def create_review(place_id):
 def update_rev(review_id):
     """Update an review object"""
     try:
-        data = request.get_json()
+        data = request.get_json(force=True)
     except Exception:
         abort(400, "Not a JSON")
     review = storage.get(Review, review_id)
