@@ -51,7 +51,7 @@ def create_review(place_id):
     if "user_id" not in data:
         abort(400, jsonify({"error": "Missing user_id"}))
 
-    if storage.get(User, data["user_id"]) is None:
+    if storage.get(User, data.get("user_id")) is None:
         abort(404)
 
     place = storage.get(Place, place_id)
