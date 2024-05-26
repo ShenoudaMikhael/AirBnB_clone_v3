@@ -29,6 +29,7 @@ def get_place(place_id):
 @app_views.route("/places/<place_id>", methods=["DELETE"])
 def delete_place(place_id):
     """Delete a Place object"""
+
     place = storage.get(Place, place_id)
     if place is None:
         abort(404)
