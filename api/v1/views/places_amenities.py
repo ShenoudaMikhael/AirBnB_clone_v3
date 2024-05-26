@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""create a file places_amenities.py"""
+"""create routes for places_amenities.py"""
 from flask import jsonify, abort
 from api.v1.views import app_views
 from models import storage
