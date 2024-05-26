@@ -8,11 +8,11 @@ from flask import request, abort
 from flask import jsonify
 
 
-@app_views.route("/states/<id>")
-@app_views.route("/states", defaults={"id": None})
-def get_states(id):
+@app_views.route("/states/<state_id>")
+@app_views.route("/states", defaults={"state_id": None})
+def get_states(state_id):
     """get all states"""
-    if id:
+    if state_id:
         state = storage.get(State, id)
         if state is None:
             abort(404)
