@@ -40,7 +40,8 @@ def search_places():
 
     search_criteria = request.get_json()
 
-    if not search_criteria or all(len(v) == 0 for v in search_criteria.values()):
+    if not search_criteria or all(len(v) == 0 for v in
+                                  search_criteria.values()):
         places = storage.all(Place).values()
         return jsonify([place.to_dict() for place in places])
 
