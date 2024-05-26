@@ -63,16 +63,16 @@ def create_review(place_id):
     return jsonify(rev), 201
 
 
-@app_views.route("/amenities/<review_id>", methods=["PUT"])
+@app_views.route("/reviews/<review_id>", methods=["PUT"])
 def update_rev(review_id):
     """Update an review object"""
-    review = storage.get(Review, review_id)
-    if review is None:
-        abort(404)
     try:
         data = request.get_json()
     except Exception:
         abort(400, "Not a JSON")
+    review = storage.get(Review, review_id)
+    if review is None:
+        abort(404)
     for key, value in data.items():
         if key not in ["id", "user_id", "place_id" "created_at", "updated_at"]:
             setattr(review, key, value)
