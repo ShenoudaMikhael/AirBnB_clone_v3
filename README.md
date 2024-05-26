@@ -150,8 +150,6 @@ EOF  all  create  destroy  help  quit  show  update
 (hbnb) quit
 ```
 
-## Bugs
-No known bugs at this time. 
 
 ## Authors
 Shenouda Mikhael - [Github](https://github.com/ShenoudaMikhael)   
