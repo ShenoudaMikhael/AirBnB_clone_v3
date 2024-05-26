@@ -4,7 +4,7 @@
 from api.v1.views import app_views
 from models import storage
 from models.state import State
-from flask import request, abort
+from flask import request, abort, make_response
 from flask import jsonify
 
 
@@ -25,9 +25,9 @@ def post_states():
     """post state"""
     data = request.get_json()
     if not data:
-        return jsonify({"error": "Not a JSON"}), 400
+        return make_response(jsonify({"error": "Not a JSON"}), 400)
     if "name" not in data:
-        return jsonify({"error": "Missing name"}), 400
+        return make_response(jsonify({"error": "Missing name"}), 400)
         # abort(400, jsonify({"error": "Missing name"}))
     a = State(**data)
     storage.new(a)
@@ -57,7 +57,7 @@ def update_state(state_id):
     data = request.get_json()
     if not data:
         # abort(400, jsonify({"error": "Not a JSON"}))
-        return jsonify({"error": "Not a JSON"}), 400
+        return make_response(jsonify({"error": "Not a JSON"}), 400)
 
     for key, value in data.items():
         if key not in ["id", "created_at", "updated_at"]:
