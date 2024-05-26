@@ -41,6 +41,9 @@ def delete_review(review_id):
 @app_views.route("/places/<place_id>/reviews", methods=["POST"])
 def create_review(place_id):
     """Delete a review object"""
+    place = storage.get(Place, place_id)
+    if place is None:
+        abort(404)
     try:
         data = request.get_json(force=True)
     except Exception:
@@ -54,9 +57,6 @@ def create_review(place_id):
     if storage.get(User, data.get("user_id")) is None:
         abort(404)
 
-    place = storage.get(Place, place_id)
-    if place is None:
-        abort(404)
     rev = Review(**data)
     storage.new(rev)
     storage.save()
@@ -74,7 +74,13 @@ def update_rev(review_id):
     if review is None:
         abort(404)
     for key, value in data.items():
-        if key not in ["id", "user_id", "place_id" "created_at", "updated_at"]:
+        if key not in [
+            "id",
+            "user_id",
+            "place_id" "created_at",
+            "updated_at",
+            "__class__",
+        ]:
             setattr(review, key, value)
     review.save()
     return jsonify(review.to_dict()), 200
