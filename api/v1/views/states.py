@@ -20,18 +20,18 @@ def get_states(id):
     return jsonify([s.to_dict() for s in storage.all(State).values()])
 
 
-# @app_views.route("/states", methods=["post"])
-# def post_states():
-#     """post state"""
-#     data = request.get_json()
-#     if not data:
-#         abort(400, "Not a JSON")
-#     if "name" not in data:
-#         abort(400, "Missing name")
-#     a = State(**data)
-#     storage.new(a)
-#     storage.save()
-#     return jsonify(a.to_dict()), 201
+@app_views.route("/states", methods=["post"])
+def post_states():
+    """post state"""
+    data = request.get_json()
+    if not data:
+        abort(400, "Not a JSON")
+    if "name" not in data:
+        abort(400, "Missing name")
+    a = State(**data)
+    storage.new(a)
+    storage.save()
+    return jsonify(a.to_dict()), 201
 
 
 # @app_views.route("/states/<state_id>", methods=["DELETE"])
