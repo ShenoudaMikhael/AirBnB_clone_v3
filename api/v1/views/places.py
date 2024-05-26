@@ -50,7 +50,7 @@ def create_place(city_id):
     if "user_id" not in data:
         abort(400, jsonify({"error": "Missing user_id"}))
     if "name" not in data:
-        abort(400, jsonify({"error":"Missing name"}))
+        abort(400, jsonify({"error": "Missing name"}))
     user_id = data["user_id"]
     if storage.get(User, user_id) is None:
         abort(404)
@@ -73,5 +73,5 @@ def update_place(place_id):
     for key, value in data.items():
         if key not in ["id", "user_id", "city_id", "created_at", "updated_at"]:
             setattr(place, key, value)
-    storage.save()
+    place.save()
     return jsonify(place.to_dict()), 200
