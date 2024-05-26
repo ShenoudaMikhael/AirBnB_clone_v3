@@ -32,5 +32,5 @@ def get_stats():
     q = {}
     for c, v in classes.items():
         count = storage.count(v)
-        q[c] = count
+        q[c] = int(count)
     return jsonify(q)
