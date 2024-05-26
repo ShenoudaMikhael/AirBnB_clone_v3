@@ -25,9 +25,10 @@ def post_states():
     """post state"""
     data = request.get_json()
     if not data:
-        abort(400, jsonify({"error": "Not a JSON"}))
+        return jsonify({"error": "Not a JSON"}), 400
     if "name" not in data:
-        abort(400, jsonify({"error": "Missing name"}))
+        return jsonify({"error": "Missing name"}), 400
+        # abort(400, jsonify({"error": "Missing name"}))
     a = State(**data)
     storage.new(a)
     storage.save()
@@ -55,7 +56,8 @@ def update_state(state_id):
 
     data = request.get_json()
     if not data:
-        abort(400, jsonify({"error": "Not a JSON"}))
+        # abort(400, jsonify({"error": "Not a JSON"}))
+        return jsonify({"error": "Not a JSON"}), 400
 
     for key, value in data.items():
         if key not in ["id", "created_at", "updated_at"]:
