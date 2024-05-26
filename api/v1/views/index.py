@@ -29,7 +29,8 @@ def get_status():
 @app_views.route("/stats")
 def get_stats():
     """get stats"""
-    # add storage.count after merge
-    # return jsonify({})
-
-    return jsonify({k: int(storage.count(v)) for k, v in classes.items()})
+    q = {}
+    for c, v in classes.items():
+        count = storage.count(v)
+        q[c] = count
+    return jsonify(q)
