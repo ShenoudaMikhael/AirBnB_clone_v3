@@ -15,7 +15,7 @@ def get_states(state_id):
     if state_id:
         state = storage.get(State, state_id)
         if state is None:
-            abort(404)
+            return abort(404)
         return jsonify(state.to_dict())
     return jsonify([s.to_dict() for s in storage.all(State).values()])
 
