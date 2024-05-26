@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""create a file states.py"""
+"""create routes for states"""
 
 from api.v1.views import app_views
 from models import storage
