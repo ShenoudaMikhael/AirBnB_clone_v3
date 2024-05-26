@@ -34,16 +34,16 @@ def post_states():
     return jsonify(a.to_dict()), 201
 
 
-# @app_views.route("/states/<state_id>", methods=["DELETE"])
-# def delete_state(state_id):
-#     """delete all states"""
-#     if state_id:
-#         st = storage.get(State, state_id)
-#         if st:
-#             storage.delete(st)
-#             storage.save()
-#             return jsonify({}), 200
-#         abort(404)
+@app_views.route("/states/<state_id>", methods=["DELETE"])
+def delete_state(state_id):
+    """delete all states"""
+    if state_id:
+        st = storage.get(State, state_id)
+        if st:
+            storage.delete(st)
+            storage.save()
+            return jsonify({}), 200
+        abort(404)
 
 
 # @app_views.route("/states/<state_id>", methods=["PUT"])
