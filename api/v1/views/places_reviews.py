@@ -60,7 +60,7 @@ def create_review(place_id):
     rev = Review(**data)
     storage.new(rev)
     storage.save()
-    return jsonify(rev), 201
+    return jsonify(rev.to_dict()), 201
 
 
 @app_views.route("/reviews/<review_id>", methods=["PUT"])
@@ -74,13 +74,7 @@ def update_rev(review_id):
     if review is None:
         abort(404)
     for key, value in data.items():
-        if key not in [
-            "id",
-            "user_id",
-            "place_id" "created_at",
-            "updated_at",
-            "__class__",
-        ]:
+        if key not in ["id", "user_id", "place_id" "created_at", "updated_at"]:
             setattr(review, key, value)
     review.save()
     return jsonify(review.to_dict()), 200
