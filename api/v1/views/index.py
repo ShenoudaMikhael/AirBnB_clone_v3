@@ -32,4 +32,4 @@ def get_stats():
     # add storage.count after merge
     # return jsonify({})
 
-    return {k: storage.count(v) for k, v in classes.items()}
+    return {k: int(storage.count(v)) for k, v in classes.items()}
