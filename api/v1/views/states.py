@@ -33,11 +33,11 @@ def post_states():
     return jsonify(a.to_dict()), 201
 
 
-@app_views.route("/states/<id>", methods=["delete"])
-def delete_state(id):
+@app_views.route("/states/<state_id>", methods=["delete"])
+def delete_state(state_id):
     """delete all states"""
-    if id:
-        st = storage.get(State, id)
+    if state_id:
+        st = storage.get(State, state_id)
         if st:
             storage.delete(st)
             storage.save()
