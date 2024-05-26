@@ -8,8 +8,8 @@ from flask import request, abort
 from flask import jsonify
 
 
-@app_views.route("/states/<state_id>", strict_slashes=False)
-@app_views.route("/states", strict_slashes=False, defaults={"state_id": None})
+@app_views.route("/states/<state_id>")
+@app_views.route("/states", defaults={"state_id": None})
 def get_states(state_id):
     """get all states"""
     if state_id:
@@ -20,7 +20,7 @@ def get_states(state_id):
     return jsonify([s.to_dict() for s in storage.all(State).values()])
 
 
-@app_views.route("/states", strict_slashes=False, methods=["post"])
+@app_views.route("/states", methods=["post"])
 def post_states():
     """post state"""
     data = request.get_json()
@@ -34,8 +34,7 @@ def post_states():
     return jsonify(a.to_dict()), 201
 
 
-@app_views.route(
-        "/states/<state_id>", strict_slashes=False, methods=["DELETE"])
+@app_views.route("/states/<state_id>", methods=["DELETE"])
 def delete_state(state_id):
     """delete all states"""
     if state_id:
@@ -47,7 +46,7 @@ def delete_state(state_id):
         abort(404)
 
 
-@app_views.route("/states/<state_id>", strict_slashes=False, methods=["PUT"])
+@app_views.route("/states/<state_id>", methods=["PUT"])
 def update_state(state_id):
     """Update a State object"""
     state = storage.get(State, state_id)
