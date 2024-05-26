@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""create a file users.py"""
+"""create routes for users"""
 from api.v1.views import app_views
 from models import storage
 from models.user import User
