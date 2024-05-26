@@ -26,9 +26,8 @@ def post_states():
     data = request.get_json()
     # if not data:
     #     return make_response(jsonify({"error": "Not a JSON"}), 400)
-    # if "name" not in data:
-    #     return make_response(jsonify({"error": "Missing name"}), 400)
-    # abort(400, jsonify({"error": "Missing name"}))
+    if "name" not in data:
+        abort(400, jsonify({"error": "Missing name"}))
     a = State(**data)
     storage.new(a)
     storage.save()
