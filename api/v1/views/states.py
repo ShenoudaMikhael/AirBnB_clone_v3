@@ -23,8 +23,10 @@ def get_states(state_id):
 @app_views.route("/states", methods=["post"])
 def post_states():
     """post state"""
-    data = request.get_json()
-    if not data:
+    data = {}
+    try:
+        data = request.get_json()
+    except Exception:
         abort(400, jsonify({"error": "Not a JSON"}))
     if "name" not in data:
         abort(400, jsonify({"error": "Missing name"}))
