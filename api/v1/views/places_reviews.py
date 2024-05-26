@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""create a file review.py"""
+"""create routes for places_reviews.py"""
 from flask import request, abort, jsonify
 from api.v1.views import app_views
 from models import storage
