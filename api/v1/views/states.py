@@ -13,7 +13,7 @@ from flask import jsonify
 def get_states(state_id):
     """get all states"""
     if state_id:
-        state = storage.get(State, id)
+        state = storage.get(State, state_id)
         if state is None:
             abort(404)
         return jsonify(state.to_dict())
