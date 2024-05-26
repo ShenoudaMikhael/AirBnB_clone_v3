@@ -43,9 +43,8 @@ def create_place(city_id):
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
-    try:
-        data = request.get_json()
-    except Exception:
+    data = request.get_json()
+    if data is None:
         abort(400, jsonify({"error": "Not a JSON"}))
     if "user_id" not in data:
         abort(400, jsonify({"error": "Missing user_id"}))
@@ -64,9 +63,8 @@ def create_place(city_id):
 @app_views.route("/places/<place_id>", methods=["PUT"])
 def update_place(place_id):
     """Update a Place object"""
-    try:
-        data = request.get_json()
-    except Exception:
+    data = request.get_json()
+    if not data:
         abort(400, jsonify({"error": "Not a JSON"}))
     place = storage.get(Place, place_id)
     if place is None:
