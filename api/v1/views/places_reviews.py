@@ -10,7 +10,7 @@ from models import storage
 
 @app_views.route("/places/<place_id>/reviews", methods=["GET"])
 def get_place_reviews(place_id):
-    """Retrieve the list of all Place objects of a City"""
+    """Retrieve the list of all reviews of a Place"""
     place = storage.get(Place, place_id)
     if place is None:
         abort(404)
@@ -44,7 +44,7 @@ def create_review(place_id):
     try:
         data = request.get_json(force=True)
     except Exception:
-        abort(400, "Not a JSON")
+        abort(400, jsonify({"error": "Not a JSON"}))
     if "text" not in data:
         abort(400, jsonify({"error": "Missing text"}))
 
@@ -69,7 +69,7 @@ def update_rev(review_id):
     try:
         data = request.get_json(force=True)
     except Exception:
-        abort(400, "Not a JSON")
+        abort(400, jsonify({"error": "Not a JSON"}))
     review = storage.get(Review, review_id)
     if review is None:
         abort(404)
