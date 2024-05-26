@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""create a file cities.py"""
+"""create routes for cities"""
 
 from api.v1.views import app_views
 from models import storage
