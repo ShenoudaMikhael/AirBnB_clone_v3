@@ -13,9 +13,10 @@ from flask import jsonify
 def get_states(id):
     """get all states"""
     if id:
-        if storage.get(State, id):
-            return jsonify(storage.get(State, id).to_dict())
-        abort(404)
+        state = storage.get(State, id)
+        if state is None:
+            abort(404)
+        return jsonify(state.to_dict())
     return jsonify([s.to_dict() for s in storage.all(State).values()])
 
 
@@ -33,7 +34,7 @@ def post_states():
     return jsonify(a.to_dict()), 201
 
 
-@app_views.route("/states/<state_id>", methods=["delete"])
+@app_views.route("/states/<state_id>", methods=["DELETE"])
 def delete_state(state_id):
     """delete all states"""
     if state_id:
