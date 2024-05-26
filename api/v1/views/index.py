@@ -31,4 +31,4 @@ def get_stats():
     """get stats"""
 
     return jsonify(
-        {k.lower(): int(storage.count(v)) for k, v in classes.items()})
+        {k.lower(): storage.count(v) for k, v in classes.items()})
