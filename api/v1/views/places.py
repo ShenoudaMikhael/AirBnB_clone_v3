@@ -85,7 +85,7 @@ def update_place(place_id):
 def places_search():
     """Update a Place object"""
     if request.get_json() is None:
-        return make_response(jsonify({"error": "Not a JSON"}), 400)
+        return abort(400, jsonify({"error": "Not a JSON"}))
 
     data = request.get_json()
 
