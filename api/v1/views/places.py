@@ -94,7 +94,7 @@ def places_search():
 
     if (
         not data
-        or not len(data)
+        or not len(data) > 0     
         or (not json_states and not json_cities and not json_amenities)
     ):
         places = storage.all(Place).values()
