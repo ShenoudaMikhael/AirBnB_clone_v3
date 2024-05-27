@@ -66,7 +66,7 @@ def create_place(city_id):
 
 @app_views.route("/places/<place_id>", methods=["PUT"])
 def update_place(place_id):
-    """Update a Place object"""
+    """search a Place object"""
     try:
         data = request.get_json(force=True)
     except Exception:
