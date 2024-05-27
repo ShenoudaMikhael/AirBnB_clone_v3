@@ -92,24 +92,36 @@ def places_search():
 
     if len(data) == 0:
         return jsonify(storage.all(Place).items())
-    # if "states" in data and len(data["states"]) > 0:
+    if "states" in data and len(data["states"]) > 0:
 
-    #     result.extend(
-    #         [
-    #             c.places
-    #             for c in [
-    #                 s.cities
-    #                 for s in storage.all(State).items()
-    #                 if s.id in data["states"]
-    #             ]
-    #         ]
-    #     )
-    # if "cities" in data and len(data["cities"]) > 0:
-    #     result.extend(
-    #         [s.places for s in storage.all(
-    #             City).items() if s.id in data["cities"]]
-    #     )
-    # if "amenities" in data and len(data["amenities"]) > 0:
-    #     result = [p for p in result if set(
-    #         data["amenities"]).issubset(p["amenities"])]
+        result.extend(
+            [
+                p.to_dict
+                for p in [
+                    c.places
+                    for c in [
+                        s.cities
+                        for s in storage.all(State).items()
+                        if s.id in data["states"]
+                    ]
+                ]
+            ]
+        )
+    if "cities" in data and len(data["cities"]) > 0:
+        result.extend(
+            [
+                p.to_dict
+                for p in [
+                    s.places
+                    for s in storage.all(City).items()
+                    if s.id in data["cities"]
+                ]
+            ]
+        )
+    if "amenities" in data and len(data["amenities"]) > 0:
+        result = [
+            p.to_dict()
+            for p in result
+            if set(data["amenities"]).issubset(p["amenities"])
+        ]
     return jsonify(result)
