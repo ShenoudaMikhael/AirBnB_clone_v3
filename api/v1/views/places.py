@@ -86,17 +86,18 @@ def places_search():
     """Update a Place object"""
     if request.get_json() is None:
         return abort(400, jsonify({"error": "Not a JSON"}))
+
     data = request.get_json()
+
     if data and len(data) > 0:
         json_states = data.get("states", None)
         json_cities = data.get("cities", None)
         json_amenities = data.get("amenities", None)
 
-    if (
-        not data
-        or not len(data) > 0
-        or (not json_states and not json_cities and not json_amenities)
-    ):
+    if (not data or not len(data) > 0 or (
+            not json_states and
+            not json_cities and
+            not json_amenities)):
         places = storage.all(Place).values()
         result = []
         result.extend([place.to_dict() for place in places])
