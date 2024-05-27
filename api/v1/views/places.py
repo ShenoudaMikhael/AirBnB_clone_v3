@@ -5,6 +5,7 @@ from models import storage
 from models.city import City
 from models.place import Place
 from models.state import State
+from models.amenity import Amenity
 from models.user import User
 from flask import request, abort, jsonify
 
@@ -88,40 +89,62 @@ def places_search():
     except Exception:
         abort(400, jsonify({"error": "Not a JSON"}))
 
+    if data and len(data) > 0:
+        json_states = data.get("states", None)
+        json_cities = data.get("cities", None)
+        json_amenities = data.get("amenities", None)
+
+    if (
+        not data
+        or not len(data)
+        or (not json_states and not json_cities and not json_amenities)
+    ):
+        places = storage.all(Place).values()
+        result = []
+        result.extend([place.to_dict() for place in places])
+        return jsonify(result)
+
     result = []
+    if json_states:
+        states_obj = [storage.get(State, s_id) for s_id in json_states]
+        result.extend(
+            [
+                place
+                for state in states_obj
+                if state
+                for city in state.cities
+                if city
+                for place in city.places
+            ]
+        )
 
-    if len(data) == 0:
-        return jsonify(storage.all(Place).items())
-    if "states" in data and len(data["states"]) > 0:
+    if json_cities:
+        city_obj = [storage.get(City, c_id) for c_id in json_cities]
 
         result.extend(
             [
-                p.to_dict
-                for p in [
-                    c.places
-                    for c in [
-                        s.cities
-                        for s in storage.all(State).items()
-                        if s.id in data["states"]
-                    ]
-                ]
+                place
+                for city in city_obj
+                if city
+                for place in city.places
+                if place not in result
             ]
         )
-    if "cities" in data and len(data["cities"]) > 0:
-        result.extend(
-            [
-                p.to_dict
-                for p in [
-                    s.places
-                    for s in storage.all(City).items()
-                    if s.id in data["cities"]
-                ]
-            ]
-        )
-    if "amenities" in data and len(data["amenities"]) > 0:
+
+    if json_amenities:
+        if not result:
+            result = storage.all(Place).values()
+        amenities_obj = [storage.get(Amenity, a_id) for a_id in json_amenities]
         result = [
-            p.to_dict()
-            for p in result
-            if set(data["amenities"]).issubset(p["amenities"])
+            place
+            for place in result
+            if all([am in place.amenities for am in amenities_obj])
         ]
-    return jsonify(result)
+
+    places = []
+    for p in result:
+        d = p.to_dict()
+        d.pop("amenities", None)
+        places.append(d)
+
+    return jsonify(places)
