@@ -4,6 +4,7 @@ from api.v1.views import app_views
 from models import storage
 from models.city import City
 from models.place import Place
+from models.state import State
 from models.user import User
 from flask import request, abort, jsonify
 
@@ -77,3 +78,38 @@ def update_place(place_id):
             setattr(place, key, value)
     place.save()
     return jsonify(place.to_dict()), 200
+
+
+@app_views.route("/places_search", methods=["post"])
+def places_search():
+    """Update a Place object"""
+    try:
+        data = request.get_json(force=True)
+    except Exception:
+        abort(400, jsonify({"error": "Not a JSON"}))
+
+    result = []
+
+    if len(data) == 0:
+        return jsonify(storage.all(Place).items())
+    if "states" in data and len(data["states"]) > 0:
+
+        result.extend(
+            [
+                c.places
+                for c in [
+                    s.cities
+                    for s in storage.all(State).items()
+                    if s.id in data["states"]
+                ]
+            ]
+        )
+    if "cities" in data and len(data["cities"]) > 0:
+        result.extend(
+            [s.places for s in storage.all(
+                City).items() if s.id in data["cities"]]
+        )
+    if "amenities" in data and len(data["amenities"]) > 0:
+        result = [p for p in result if set(
+            data["amenities"]).issubset(p["amenities"])]
+    return jsonify(result)
