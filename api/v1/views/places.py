@@ -129,9 +129,7 @@ def places_search():
         result = [place for place in result if all(
             [am in place.amenities for am in amenities_obj])]
 
-    places = []
-    for p in result:
-        d = p.to_dict()
-        d.pop("amenities", None)
-        places.append(d)
+    places = [p.to_dict() for p in result]
+    for p in places:
+        p.pop('amenities', None)
     return jsonify(places)
